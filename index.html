@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro-Wallet | Local Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        .transition-all-300 { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 antialiased transition-colors duration-300 min-h-screen">
+
+    <header class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm border-b border-slate-200 dark:border-slate-800 p-4 sm:p-5 mb-4 sm:mb-6 sticky top-0 z-50 transition-colors duration-300 backdrop-blur-md bg-white/90 dark:bg-slate-900/90">
+        <div class="container mx-auto max-w-6xl flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
+            <div class="text-center sm:text-right w-full sm:w-auto">
+                <h1 class="text-base sm:text-lg font-bold tracking-wide flex items-center justify-center sm:justify-start gap-2 text-slate-900 dark:text-white">
+                    💎 Pro-Wallet <span class="text-[9px] bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-900 px-1.5 py-0.5 rounded font-normal">Local v1.0</span>
+                </h1>
+                <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">إدارة مالية آمنة ومستقلة 100% على جهازك</p>
+            </div>
+            
+            <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100 dark:border-slate-800">
+                <button id="themeToggleBtn" onclick="toggleTheme()" class="flex-1 sm:flex-none py-2 px-3 sm:p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-amber-400 transition-all-300 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-95">
+                    <span id="themeIcon">🌙</span> <span id="themeText">الوضع الليلي</span>
+                </button>
+                <div class="text-[11px] bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50 px-3 py-2 rounded-xl font-medium text-center shadow-sm">
+                    تخزين آمن 🔒
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-3 sm:px-4 max-w-6xl mb-12 space-y-4 sm:space-y-6">
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-900 dark:to-slate-950 text-white p-5 sm:p-6 rounded-2xl shadow-md border border-slate-800 dark:border-slate-800 flex justify-between items-center relative overflow-hidden">
+                <div>
+                    <span class="text-[11px] text-slate-400 block font-medium">🗓️ الدورة القادمة</span>
+                    <p id="daysLeftBox" class="text-2xl sm:text-3xl font-bold text-slate-100 tracking-tight mt-1">0 يوم</p>
+                    <span class="text-[10px] text-slate-400 block mt-0.5">حتى الإغلاق (يوم 27)</span>
+                </div>
+                <div class="text-left">
+                    <span class="text-[11px] text-slate-400 block font-medium">📉 المسموح يومياً كاش</span>
+                    <p id="dailyBudgetBox" class="text-lg sm:text-xl font-bold text-indigo-400 tracking-wide mt-1">0 د.ع</p>
+                    <span class="text-[9px] text-slate-400 block mt-0.5">لتجنب الاستهلاك السريع</span>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">📊 مؤشر التوازن المالي للأرشفة</h3>
+                    <div class="flex justify-between mt-3">
+                        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span> أساسي: <span id="needsPercent" class="font-bold text-slate-900 dark:text-slate-100">0%</span>
+                        </span>
+                        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-fuchsia-500"></span> ترفيه: <span id="wantsPercent" class="font-bold text-slate-900 dark:text-slate-100">0%</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden flex mt-4 border border-slate-200/40 dark:border-slate-700/50">
+                    <div id="needsBar" class="bg-indigo-500 h-full transition-all duration-500"></div>
+                    <div id="wantsBar" class="bg-fuchsia-500 h-full transition-all duration-500"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">💵 إدارة وهيكلة الراتب:</h2>
+                <div class="flex gap-2 items-center">
+                    <button id="unlockBtn" onclick="triggerUnlock()" class="hidden text-[10px] bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-400 border border-amber-200/60 dark:border-amber-900/50 font-bold px-2 py-1 rounded-lg transition-all-300">🔓 تعديل</button>
+                    <span id="lockBadge" class="text-[10px] font-bold px-2 py-1 rounded-lg"></span>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-3.5">
+                <div>
+                    <label class="text-[11px] font-medium text-slate-400 dark:text-slate-500 block mb-1">إجمالي الراتب</label>
+                    <input type="text" id="salaryInput" oninput="formatCurrency(this)" onkeydown="handleArrows(event, this)" placeholder="1,000,000" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold bg-slate-50/50 dark:bg-slate-950/40 text-slate-900 dark:text-white outline-none">
+                </div>
+                <div>
+                    <label class="text-[11px] font-medium text-slate-400 dark:text-slate-500 block mb-1">مخصص الماستر</label>
+                    <input type="text" id="cardAllocInput" oninput="formatCurrency(this)" onkeydown="handleArrows(event, this)" placeholder="500,000" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-800 dark:text-white bg-slate-50/50 dark:bg-slate-950/40 outline-none">
+                </div>
+                <div>
+                    <label class="text-[11px] font-medium text-slate-400 dark:text-slate-500 block mb-1">المسحوب كاش</label>
+                    <input type="text" id="cashAllocInput" oninput="formatCurrency(this)" onkeydown="handleArrows(event, this)" placeholder="500,000" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-bold text-slate-800 dark:text-white bg-slate-50/50 dark:bg-slate-950/40 outline-none">
+                </div>
+                <div class="flex items-end">
+                    <button id="saveSalaryBtn" onclick="updateSalary()" class="w-full bg-slate-900 hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm transition-all-300 shadow-sm active:scale-98">حفظ وقفل الدورة</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 rounded-2xl shadow-sm">
+                <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase block">💰 الراتب الأساسي</span>
+                <p id="totalSalaryBox" class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-1.5 tracking-tight">0 د.ع</p>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 rounded-2xl shadow-sm space-y-2.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase block">💵 الكاش المتبقي</span>
+                    <span id="initialCashLabel" class="text-[9px] font-medium text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-950 px-1.5 py-0.5 rounded border border-slate-100 dark:border-slate-800"></span>
+                </div>
+                <p id="cashBox" class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">0 د.ع</p>
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div id="cashProgressBar" class="h-full bg-indigo-500 transition-all duration-500" style="width: 100%"></div>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 rounded-2xl shadow-sm space-y-2.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase block">💳 رصيد الماستر</span>
+                    <span id="initialCardLabel" class="text-[9px] font-medium text-slate-400 dark:text-slate-500 bg-slate-50 dark:bg-slate-950 px-1.5 py-0.5 rounded border border-slate-100 dark:border-slate-800"></span>
+                </div>
+                <p id="cardBox" class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">0 د.ع</p>
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div id="cardProgressBar" class="h-full bg-sky-400 transition-all duration-500" style="width: 100%"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+                <h2 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3.5">💸 قيد مصرف يومي جديد:</h2>
+                <div class="space-y-3.5">
+                    <input type="text" id="expTitle" placeholder="عنوان المصروف (بنزين، مسواك أسري)" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-slate-50/40 dark:bg-slate-950/40 text-slate-900 dark:text-white outline-none">
+                    <div class="grid grid-cols-1 xs:grid-cols-3 gap-2.5">
+                        <input type="text" id="expAmount" oninput="formatCurrency(this)" onkeydown="handleArrows(event, this)" placeholder="المبلغ" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-slate-50/40 dark:bg-slate-950/40 text-slate-900 dark:text-white font-bold outline-none">
+                        <select id="expCategory" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400 font-medium outline-none">
+                            <option value="need">🔹 أساسي</option>
+                            <option value="want">✨ ترفيه</option>
+                        </select>
+                        <select id="expMethod" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-slate-50 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400 font-bold outline-none">
+                            <option value="cash">💵 كاش</option>
+                            <option value="card">💳 ماستر</option>
+                        </select>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800 p-2.5 rounded-xl flex flex-wrap gap-2">
+                        <button onclick="quickFill('بنزين السيارة الأسبوعي', '15,000', 'need', 'cash')" class="text-[10px] bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 rounded-lg">🚗 بنزين (15ألف)</button>
+                        <button onclick="quickFill('مصرف الدوام اليومي', '5,000', 'want', 'cash')" class="text-[10px] bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700 px-2.5 py-1.5 rounded-lg">☕ دوام (5آلاف)</button>
+                    </div>
+                    <button onclick="addExpense()" class="w-full bg-slate-900 hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white py-3 rounded-xl text-sm font-bold transition-all-300 shadow-sm active:scale-98">خصم وأرشفة الحركة</button>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+                <h2 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3.5">📌 تسجيل ذمة مالية معلقة:</h2>
+                <div class="space-y-3.5">
+                    <input type="text" id="debtName" placeholder="اسم الدائن الفعلي" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-slate-50/40 dark:bg-slate-950/40 text-slate-900 dark:text-white outline-none">
+                    <input type="text" id="debtAmount" oninput="formatCurrency(this)" onkeydown="handleArrows(event, this)" placeholder="مبلغ الذمة المطلوب" class="w-full p-3 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-slate-50/40 dark:bg-slate-950/40 text-slate-900 dark:text-white font-bold outline-none">
+                    <button onclick="addDebt()" class="w-full bg-slate-800 hover:bg-slate-700 dark:bg-slate-800 text-white py-3 rounded-xl text-sm font-bold transition-all-300 active:scale-98">تقييد الدين في السجل</button>
+                </div>
+            </div>
+        </div>
+
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm md:col-span-2">
+                <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+                    <h2 class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">📜 الحركات المؤرشفة حالياً</h2>
+                    <span id="totalExp" class="text-xs bg-slate-100 dark:bg-slate-950 border border-slate-200 font-bold px-2.5 py-1 rounded-xl">المجموع: 0 د.ع</span>
+                </div>
+                <ul id="expenseList" class="divide-y divide-slate-100 dark:divide-slate-800 max-h-72 overflow-y-auto pl-1"></ul>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+                <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-100 dark:border-slate-800">
+                    <h2 class="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">📋 ديون مفتوحة</h2>
+                    <span id="totalDebt" class="text-xs bg-rose-50 dark:bg-rose-950 text-rose-700 font-bold px-2 rounded-xl">0 د.ع</span>
+                </div>
+                <ul id="debtList" class="divide-y divide-slate-100 dark:divide-slate-800 max-h-72 overflow-y-auto pl-1"></ul>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // هيكل البيانات الافتراضي
+        let db = {
+            salary: 0, initialCard: 0, initialCash: 0,
+            cardBalance: 0, cashBalance: 0, isLocked: false,
+            expenses: [], debts: []
+        };
+
+        // تحميل البيانات من ذاكرة المتصفح أول الفتح
+        function loadData() {
+            const localData = localStorage.getItem('pro_wallet_db');
+            if(localData) {
+                db = JSON.parse(localData);
+            }
+            renderUI();
+        }
+
+        function saveData() {
+            localStorage.setItem('pro_wallet_db', JSON.stringify(db));
+            renderUI();
+        }
+
+        function formatCurrency(input) {
+            let value = input.value.replace(/,/g, '');
+            if(!isNaN(value) && value !== '') input.value = parseFloat(value).toLocaleString('en-US');
+            else input.value = '';
+        }
+
+        function handleArrows(event, input) {
+            let value = parseFloat(input.value.replace(/,/g, '')) || 0;
+            if (event.key === 'ArrowUp') { event.preventDefault(); value += 10000; input.value = value.toLocaleString('en-US'); }
+            else if (event.key === 'ArrowDown') { event.preventDefault(); value = Math.max(0, value - 10000); input.value = value.toLocaleString('en-US'); }
+        }
+
+        function getCleanValue(id) {
+            return parseFloat(document.getElementById(id).value.replace(/,/g, '')) || 0;
+        }
+
+        function calculateDaysUntil27() {
+            const today = new Date();
+            let target = new Date(today.getFullYear(), today.getMonth(), 27);
+            if (today.getDate() >= 27) target.setMonth(target.getMonth() + 1);
+            return Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+        }
+
+        function quickFill(title, amount, category, method) {
+            document.getElementById('expTitle').value = title;
+            document.getElementById('expAmount').value = amount;
+            document.getElementById('expCategory').value = category;
+            document.getElementById('expMethod').value = method;
+        }
+
+        // عمليات الحسابات والـ Logic الداخلي بدل السيرفر
+        function updateSalary() {
+            db.salary = getCleanValue('salaryInput');
+            db.initialCard = getCleanValue('cardAllocInput');
+            db.initialCash = getCleanValue('cashAllocInput');
+            db.cardBalance = db.initialCard;
+            db.cashBalance = db.initialCash;
+            db.isLocked = true;
+            db.expenses = [];
+            saveData();
+        }
+
+        function triggerUnlock() {
+            if(confirm("هل تريد فتح قفل الميزانية وتعديل الدورة الحالية؟")) {
+                db.isLocked = false;
+                saveData();
+            }
+        }
+
+        function addExpense() {
+            const title = document.getElementById('expTitle').value;
+            const amount = getCleanValue('expAmount');
+            const category = document.getElementById('expCategory').value;
+            const method = document.getElementById('expMethod').value;
+
+            if(title && amount) {
+                if(method === 'cash') db.cashBalance -= amount;
+                else db.cardBalance -= amount;
+
+                db.expenses.unshift({ id: Date.now(), title, amount, category, method });
+                document.getElementById('expTitle').value = '';
+                document.getElementById('expAmount').value = '';
+                saveData();
+            }
+        }
+
+        function addDebt() {
+            const name = document.getElementById('debtName').value;
+            const amount = getCleanValue('debtAmount');
+            if(name && amount) {
+                db.debts.unshift({ id: Date.now(), name, amount });
+                document.getElementById('debtName').value = '';
+                document.getElementById('debtAmount').value = '';
+                saveData();
+            }
+        }
+
+        function deleteItem(id, type) {
+            if(confirm("هل متأكد من حذف هذا البند؟")) {
+                if(type === 'expense') {
+                    const idx = db.expenses.findIndex(e => e.id === id);
+                    if(idx !== -1) {
+                        const item = db.expenses[idx];
+                        if(item.method === 'cash') db.cashBalance += item.amount;
+                        else db.cardBalance += item.amount;
+                        db.expenses.splice(idx, 1);
+                    }
+                } else {
+                    db.debts = db.debts.filter(d => d.id !== id);
+                }
+                saveData();
+            }
+        }
+
+        function updateBarColor(element, percentage) {
+            element.style.width = percentage + '%';
+            if(percentage > 50) element.className = element.id === 'cashProgressBar' ? "h-full bg-indigo-500 transition-all duration-500" : "h-full bg-sky-400 transition-all duration-500";
+            else if(percentage > 20) element.className = "h-full bg-amber-500 transition-all duration-500";
+            else element.className = "h-full bg-rose-500 transition-all duration-500";
+        }
+
+        // بناء وعرض الواجهة الديناميكية
+        function renderUI() {
+            document.getElementById('totalSalaryBox').innerText = db.salary.toLocaleString('ar-IQ') + ' د.ع';
+            document.getElementById('cashBox').innerText = db.cashBalance.toLocaleString('ar-IQ') + ' د.ع';
+            document.getElementById('cardBox').innerText = db.cardBalance.toLocaleString('ar-IQ') + ' د.ع';
+
+            document.getElementById('initialCashLabel').innerText = `البداية: ${db.initialCash.toLocaleString('ar-IQ')}`;
+            document.getElementById('initialCardLabel').innerText = `البداية: ${db.initialCard.toLocaleString('ar-IQ')}`;
+
+            updateBarColor(document.getElementById('cashProgressBar'), db.initialCash > 0 ? (db.cashBalance / db.initialCash) * 100 : 0);
+            updateBarColor(document.getElementById('cardProgressBar'), db.initialCard > 0 ? (db.cardBalance / db.initialCard) * 100 : 0);
+
+            const daysLeft = calculateDaysUntil27();
+            document.getElementById('daysLeftBox').innerText = daysLeft + " يوم";
+            document.getElementById('dailyBudgetBox').innerText = (db.cashBalance > 0 && daysLeft > 0 ? Math.round(db.cashBalance / daysLeft) : 0).toLocaleString('ar-IQ') + " د.ع / يوم";
+
+            if(db.isLocked) {
+                document.getElementById('salaryInput').value = db.salary.toLocaleString('en-US');
+                document.getElementById('cardAllocInput').value = db.initialCard.toLocaleString('en-US');
+                document.getElementById('cashAllocInput').value = db.initialCash.toLocaleString('en-US');
+                ['salaryInput', 'cardAllocInput', 'cashAllocInput'].forEach(id => document.getElementById(id).disabled = true);
+                document.getElementById('saveSalaryBtn').disabled = true;
+                document.getElementById('saveSalaryBtn').className = "w-full bg-slate-200 text-slate-400 dark:bg-slate-800 font-bold py-3 rounded-xl text-sm cursor-not-allowed border border-slate-300/30";
+                document.getElementById('lockBadge').innerText = "🔒 مقفل";
+                document.getElementById('lockBadge').className = "text-[10px] font-bold px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500";
+                document.getElementById('unlockBtn').classList.remove('hidden');
+            } else {
+                ['salaryInput', 'cardAllocInput', 'cashAllocInput'].forEach(id => document.getElementById(id).disabled = false);
+                document.getElementById('saveSalaryBtn').disabled = false;
+                document.getElementById('saveSalaryBtn').className = "w-full bg-slate-900 hover:bg-slate-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-3 rounded-xl text-sm shadow-sm";
+                document.getElementById('lockBadge').innerText = "🔓 إدخال";
+                document.getElementById('lockBadge').className = "text-[10px] font-bold px-2 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950 text-indigo-600";
+                document.getElementById('unlockBtn').classList.add('hidden');
+            }
+
+            const expList = document.getElementById('expenseList');
+            expList.innerHTML = '';
+            let totalExp = 0, needsTotal = 0, wantsTotal = 0;
+
+            db.expenses.forEach(e => {
+                totalExp += e.amount;
+                if(e.category === 'need') needsTotal += e.amount; else wantsTotal += e.amount;
+
+                const methodColor = e.method === 'cash' ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-950/40' : 'text-sky-600 dark:text-sky-400 bg-sky-50/50 dark:bg-sky-950/40';
+                const catColor = e.category === 'need' ? 'bg-slate-100 dark:bg-slate-800 text-slate-600' : 'bg-fuchsia-50 dark:bg-fuchsia-950/40 text-fuchsia-600';
+                
+                expList.innerHTML += `
+                    <li class="flex justify-between items-center py-3 text-xs border-b border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/40 px-1 rounded-xl transition-all-300">
+                        <div class="min-w-0 flex-1 pl-2">
+                            <span class="font-bold text-slate-800 dark:text-slate-200 text-xs sm:text-sm block truncate">${e.title}</span>
+                            <div class="flex gap-1 items-center mt-1 text-[9px] font-semibold">
+                                <span class="px-1.5 py-0.5 rounded ${methodColor}">${e.method === 'cash' ? '💵 كاش' : '💳 ماستر'}</span>
+                                <span class="px-1.5 py-0.5 rounded ${catColor}">${e.category === 'need' ? '🔹 أساسي' : '✨ ترفيه'}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="text-slate-900 dark:text-white font-bold text-xs sm:text-sm">${e.amount.toLocaleString('ar-IQ')}</span>
+                            <button onclick="deleteItem(${e.id}, 'expense')" class="text-slate-300 hover:text-rose-500 text-sm p-1">🗑️</button>
+                        </div>
+                    </li>`;
+            });
+            document.getElementById('totalExp').innerText = `المجموع: ${totalExp.toLocaleString('ar-IQ')} د.ع`;
+
+            const totalCat = needsTotal + wantsTotal;
+            const nP = totalCat > 0 ? Math.round((needsTotal / totalCat) * 100) : 50;
+            const wP = totalCat > 0 ? Math.round((wantsTotal / totalCat) * 100) : 50;
+            document.getElementById('needsPercent').innerText = nP + "%";
+            document.getElementById('wantsPercent').innerText = wP + "%";
+            document.getElementById('needsBar').style.width = nP + "%";
+            document.getElementById('wantsBar').style.width = wP + "%";
+
+            const dList = document.getElementById('debtList');
+            dList.innerHTML = '';
+            let totalDebt = 0;
+            db.debts.forEach(d => {
+                totalDebt += d.amount;
+                dList.innerHTML += `
+                    <li class="flex justify-between items-center py-2.5 text-xs border-b border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/40 px-1 rounded-xl">
+                        <div class="min-w-0 flex-1 truncate"><span class="font-bold text-slate-700 dark:text-slate-300">طلب لـ ${d.name}</span></div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="text-rose-600 font-bold text-xs">${d.amount.toLocaleString('ar-IQ')}</span>
+                            <button onclick="deleteItem(${d.id}, 'debt')" class="bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 px-2 py-1 rounded-xl text-[9px] font-bold">تم ✅</button>
+                        </div>
+                    </li>`;
+            });
+            document.getElementById('totalDebt').innerText = `${totalDebt.toLocaleString('ar-IQ')} د.ع`;
+        }
+
+        // إدارة ثيم الألوان المظلم والفاتح
+        function initTheme() {
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark'); updateThemeUI(true);
+            } else {
+                document.documentElement.classList.remove('dark'); updateThemeUI(false);
+            }
+        }
+        function toggleTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); updateThemeUI(false);
+            } else {
+                document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); updateThemeUI(true);
+            }
+        }
+        function updateThemeUI(isDark) {
+            document.getElementById('themeIcon').innerText = isDark ? "☀️" : "🌙";
+            document.getElementById('themeText').innerText = isDark ? "الوضع الفاتح" : "الوضع الليلي";
+        }
+
+        initTheme();
+        window.onload = loadData;
+    </script>
+</body>
+</html>
