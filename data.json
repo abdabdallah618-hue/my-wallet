@@ -1,0 +1,47 @@
+{
+  "salary": 1000000,
+  "initialCard": 500000,
+  "initialCash": 500000,
+  "cardBalance": 500000,
+  "cashBalance": 40000,
+  "expenses": [
+    {
+      "id": 1779315759587,
+      "title": "cours english",
+      "amount": 110000,
+      "category": "need",
+      "method": "cash",
+      "date": "٢١‏/٥‏/٢٠٢٦، ٠١:٢٢ ص"
+    },
+    {
+      "id": 1779314333799,
+      "title": "سلفة ",
+      "amount": 350000,
+      "category": "need",
+      "method": "cash",
+      "date": "٢١‏/٥‏/٢٠٢٦، ١٢:٥٨ ص"
+    }
+  ],
+  "debts": [
+    {
+      "id": 1779314347198,
+      "name": "ماما ",
+      "amount": 20000,
+      "date": "٢١‏/٥‏/٢٠٢٦"
+    },
+    {
+      "id": 1779314353981,
+      "name": "بابا",
+      "amount": 45000,
+      "date": "٢١‏/٥‏/٢٠٢٦"
+    },
+    {
+      "id": 1779314364005,
+      "name": "ابو نجم",
+      "amount": 10000,
+      "date": "٢١‏/٥‏/٢٠٢٦"
+    }
+  ],
+  "lastSalaryMonth": "2026-5",
+  "isLocked": true
+}
